@@ -21,7 +21,8 @@ import {
   Brain,
   ChevronLeft,
   ChevronRight,
-  Package
+  Package,
+  ClipboardList
 } from 'lucide-react';
 import { MenuItemData, MenuGroup } from '../types';
 
@@ -49,6 +50,12 @@ const menuGroups: MenuGroup[] = [
       { name: 'Fraud Check', icon: ShieldCheck, badge: 'Pro' },
       { name: 'No Entry Parcel', icon: AlertCircle },
       { name: 'Cancel Approval', icon: CheckCircle2 },
+    ]
+  },
+  {
+    title: "Deliveries",
+    items: [
+      { name: 'Parcel List', icon: ClipboardList },
     ]
   },
   {
