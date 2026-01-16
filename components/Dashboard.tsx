@@ -28,7 +28,7 @@ import {
   X,
   CalendarDays,
   ChevronRight,
-  Activity
+  Zap
 } from 'lucide-react';
 import { getLogisticsInsights } from '../services/geminiService';
 
@@ -97,14 +97,28 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="p-8 space-y-8 overflow-y-auto h-full scrollbar-hide">
-      {/* Page Title & Controls */}
+      {/* Page Title & Quick Action Buttons */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div>
-          <h1 className="text-2xl font-bold text-[#1a3762] tracking-tight">Logistics Console</h1>
-          <p className="text-[10px] text-slate-400 font-bold uppercase mt-1 flex items-center gap-1.5">
-            <Clock size={10} className="text-[#ff751f]" />
-            Last updated: {lastUpdateTime}
-          </p>
+        <div className="flex flex-wrap items-center gap-6">
+          <div>
+            <h1 className="text-2xl font-bold text-[#1a3762] tracking-tight">Logistics Console</h1>
+            <p className="text-[10px] text-slate-400 font-bold uppercase mt-1 flex items-center gap-1.5">
+              <Clock size={10} className="text-[#ff751f]" />
+              Last updated: {lastUpdateTime}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button className="border border-[#1a3762] text-[#1a3762] px-3 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 flex items-center gap-2 hover:bg-[#1a3762]/5 shadow-sm">
+              <Wallet size={14} /> Balance
+            </button>
+            <button className="border border-[#ff751f] text-[#ff751f] px-3 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 flex items-center gap-2 hover:bg-[#ff751f]/5 shadow-sm">
+              <Zap size={14} /> Booking
+            </button>
+            <button className="bg-[#ff751f] text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-md transition-all active:scale-95 flex items-center gap-2 hover:bg-orange-600">
+              <Package size={14} /> New Entry
+            </button>
+          </div>
         </div>
         
         <div className="flex flex-wrap items-center gap-3">

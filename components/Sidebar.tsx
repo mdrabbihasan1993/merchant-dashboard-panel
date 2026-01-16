@@ -20,7 +20,8 @@ import {
   Contact,
   Brain,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Package
 } from 'lucide-react';
 import { MenuItemData, MenuGroup } from '../types';
 
@@ -41,6 +42,7 @@ const menuGroups: MenuGroup[] = [
   {
     title: "Logistics",
     items: [
+      { name: 'New Entry', icon: Package },
       { name: 'Quick Booking', icon: Zap },
       { name: 'AI Booking', icon: Brain, badge: 'AI' },
       { name: 'Pickup Request', icon: Truck },
