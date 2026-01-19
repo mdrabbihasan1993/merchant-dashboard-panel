@@ -17,8 +17,6 @@ export interface BookingData {
   customerName: string;
   phoneNumber: string;
   address: string;
-  district: string;
-  packageType: string;
   weight: number;
   codAmount: number;
   note?: string;

@@ -18,13 +18,11 @@ export const parseBookingRequest = async (inputText: string): Promise<BookingDat
             customerName: { type: Type.STRING, description: "Full name of the customer" },
             phoneNumber: { type: Type.STRING, description: "Contact number" },
             address: { type: Type.STRING, description: "Detailed delivery address" },
-            district: { type: Type.STRING, description: "City or District name" },
-            packageType: { type: Type.STRING, description: "Type of item, e.g., Clothing, Electronics" },
             weight: { type: Type.NUMBER, description: "Weight in kg" },
             codAmount: { type: Type.NUMBER, description: "Cash on delivery amount" },
             note: { type: Type.STRING, description: "Any special instructions" }
           },
-          required: ["customerName", "phoneNumber", "address", "district", "codAmount"]
+          required: ["customerName", "phoneNumber", "address", "codAmount"]
         }
       }
     });

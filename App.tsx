@@ -12,7 +12,7 @@ const App: React.FC = () => {
   const renderContent = () => {
     switch (activeTab) {
       case 'Dashboard':
-        return <Dashboard />;
+        return <Dashboard setActiveTab={setActiveTab} />;
       case 'AI Booking':
         return <AIBooking />;
       default:

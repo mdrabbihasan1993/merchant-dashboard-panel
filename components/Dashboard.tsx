@@ -28,11 +28,17 @@ import {
   X,
   CalendarDays,
   ChevronRight,
-  Zap
+  Zap,
+  PauseCircle,
+  Building2
 } from 'lucide-react';
 import { getLogisticsInsights } from '../services/geminiService';
 
-export const Dashboard: React.FC = () => {
+interface DashboardProps {
+  setActiveTab: (tab: string) => void;
+}
+
+export const Dashboard: React.FC<DashboardProps> = ({ setActiveTab }) => {
   const [selectedPreset, setSelectedPreset] = useState('Last 7 Days');
   const [lastUpdateTime, setLastUpdateTime] = useState("");
   const [aiInsights, setAiInsights] = useState<string | null>(null);
@@ -58,10 +64,12 @@ export const Dashboard: React.FC = () => {
   ];
 
   const forwardStats = [
-    { label: 'At sorting', value: '98', icon: Boxes, color: 'text-[#ff751f]', bgColor: 'bg-orange-50' },
-    { label: 'Assigned for delivery', value: '1,240', icon: Truck, color: 'text-[#1a3762]', bgColor: 'bg-blue-50' },
-    { label: 'In transit', value: '450', icon: Truck, color: 'text-slate-600', bgColor: 'bg-slate-50' },
-    { label: 'At Delivery Hub', value: '320', icon: MapPin, color: 'text-slate-600', bgColor: 'bg-slate-50' },
+    { label: 'At sorting', value: '98', icon: Boxes, color: 'text-[#ff751f]', bgColor: 'bg-orange-50', borderColor: 'border-orange-100' },
+    { label: 'In transit', value: '450', icon: Truck, color: 'text-blue-500', bgColor: 'bg-blue-50', borderColor: 'border-blue-100' },
+    { label: 'Received at Hub', value: '320', icon: MapPin, color: 'text-slate-600', bgColor: 'bg-slate-50', borderColor: 'border-slate-100' },
+    { label: 'Need your approval', value: '145', icon: Building2, color: 'text-red-600', bgColor: 'bg-red-50', borderColor: 'border-red-100', clickable: true, targetTab: 'Cancel Approval' },
+    { label: 'Assigned for delivery', value: '1,240', icon: CheckCircle2, color: 'text-emerald-600', bgColor: 'bg-emerald-50', borderColor: 'border-emerald-100' },
+    { label: 'Hold', value: '24', icon: PauseCircle, color: 'text-yellow-600', bgColor: 'bg-yellow-50', borderColor: 'border-yellow-100' },
   ];
 
   const returnStats = [
@@ -216,17 +224,21 @@ export const Dashboard: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {forwardStats.map((f, i) => (
-                  <div key={i} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-start hover:border-[#1a3762]/30 transition-all group">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-all group-hover:scale-110 ${f.bgColor} ${f.color}`}>
+                  <div 
+                    key={i} 
+                    onClick={() => f.clickable && f.targetTab && setActiveTab(f.targetTab)}
+                    className={`${f.bgColor} p-5 rounded-2xl border ${f.borderColor || 'border-slate-100'} shadow-sm flex flex-col items-start transition-all group ${f.clickable ? 'cursor-pointer hover:shadow-md hover:ring-2 hover:ring-red-200 active:scale-[0.98]' : 'hover:border-[#1a3762]/20'}`}
+                  >
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-all group-hover:scale-110 bg-white/80 shadow-sm ${f.color}`}>
                       <f.icon size={20} />
                     </div>
                     <div className="space-y-0.5">
-                      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wide">
+                      <p className={`text-[10px] font-bold uppercase tracking-wide ${f.color} opacity-70`}>
                         {f.label}
                       </p>
-                      <h3 className="text-2xl font-bold text-[#1a3762] tracking-tight">
+                      <h3 className={`text-2xl font-bold tracking-tight ${f.color === 'text-slate-600' ? 'text-[#1a3762]' : f.color}`}>
                         {f.value}
                       </h3>
                     </div>

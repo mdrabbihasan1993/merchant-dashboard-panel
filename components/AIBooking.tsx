@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Brain, Sparkles, Send, Loader2, CheckCircle2, User, Phone, MapPin, Package, CreditCard, StickyNote, ArrowRight } from 'lucide-react';
+import { Brain, Sparkles, Send, Loader2, CheckCircle2, User, Phone, MapPin, Package, CreditCard, StickyNote, ArrowRight, Weight } from 'lucide-react';
 import { parseBookingRequest } from '../services/geminiService';
 import { BookingData } from '../types';
 
@@ -18,8 +18,17 @@ export const AIBooking: React.FC = () => {
     setIsLoading(false);
   };
 
+  const handleFieldChange = (field: keyof BookingData, value: string | number) => {
+    if (!parsedData) return;
+    setParsedData({
+      ...parsedData,
+      [field]: value
+    });
+  };
+
   const handleConfirm = () => {
     setSuccess(true);
+    // Here you would typically call an API to save the booking
     setTimeout(() => {
       setSuccess(false);
       setParsedData(null);
@@ -91,27 +100,59 @@ export const AIBooking: React.FC = () => {
           {/* Result Section */}
           <div className={`space-y-4 transition-all duration-500 ${parsedData ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none translate-y-4'}`}>
             <h3 className="text-lg font-bold text-[#1a3762] flex items-center gap-2">
-              Review extracted data
+              Review & Correct Data
               {parsedData && <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded uppercase font-bold tracking-wider">Verified</span>}
             </h3>
 
             <div className="bg-white border border-slate-100 rounded-2xl shadow-sm p-6 space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <DataField icon={User} label="Customer Name" value={parsedData?.customerName || '—'} />
-                <DataField icon={Phone} label="Phone Number" value={parsedData?.phoneNumber || '—'} />
+                <DataField 
+                  icon={User} 
+                  label="Customer Name" 
+                  value={parsedData?.customerName || ''} 
+                  onChange={(val) => handleFieldChange('customerName', val)}
+                />
+                <DataField 
+                  icon={Phone} 
+                  label="Phone Number" 
+                  value={parsedData?.phoneNumber || ''} 
+                  onChange={(val) => handleFieldChange('phoneNumber', val)}
+                />
                 <div className="sm:col-span-2">
-                  <DataField icon={MapPin} label="Address" value={parsedData ? `${parsedData.address}, ${parsedData.district}` : '—'} />
+                  <DataField 
+                    icon={MapPin} 
+                    label="Address" 
+                    value={parsedData?.address || ''} 
+                    onChange={(val) => handleFieldChange('address', val)}
+                  />
                 </div>
-                <DataField icon={Package} label="Item Type" value={parsedData?.packageType || 'Regular Parcel'} />
-                <DataField icon={CreditCard} label="COD Amount" value={parsedData ? `৳ ${parsedData.codAmount}` : '—'} />
+                <DataField 
+                  icon={Weight} 
+                  label="Weight (kg)" 
+                  type="number"
+                  value={parsedData?.weight || 0} 
+                  onChange={(val) => handleFieldChange('weight', parseFloat(val) || 0)}
+                />
+                <DataField 
+                  icon={CreditCard} 
+                  label="COD Amount" 
+                  type="number"
+                  value={parsedData?.codAmount || 0} 
+                  onChange={(val) => handleFieldChange('codAmount', parseFloat(val) || 0)}
+                />
               </div>
 
-              {parsedData?.note && (
-                <div className="pt-4 border-t border-slate-50">
-                   <p className="text-xs font-bold text-slate-400 uppercase mb-2">Instructions</p>
-                   <p className="text-sm text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-100 italic">"{parsedData.note}"</p>
-                </div>
-              )}
+              <div className="pt-4 border-t border-slate-50">
+                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5 mb-2">
+                   <StickyNote size={12} /> Instructions / Note
+                 </p>
+                 <textarea
+                    value={parsedData?.note || ''}
+                    onChange={(e) => handleFieldChange('note', e.target.value)}
+                    className="w-full text-sm text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-100 focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-500/10 outline-none transition-all resize-none italic h-20"
+                    placeholder="Add extra notes here..."
+                 />
+              </div>
 
               <button
                 onClick={handleConfirm}
@@ -129,11 +170,22 @@ export const AIBooking: React.FC = () => {
   );
 };
 
-const DataField: React.FC<{ icon: any, label: string, value: string }> = ({ icon: Icon, label, value }) => (
+const DataField: React.FC<{ 
+  icon: any, 
+  label: string, 
+  value: string | number, 
+  type?: string,
+  onChange: (val: string) => void 
+}> = ({ icon: Icon, label, value, type = "text", onChange }) => (
   <div className="space-y-1.5">
     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
       <Icon size={12} /> {label}
     </p>
-    <p className="text-sm font-semibold text-slate-700 truncate">{value}</p>
+    <input 
+      type={type}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="w-full text-sm font-semibold text-slate-700 bg-slate-50 border border-transparent focus:border-orange-500 focus:bg-white focus:ring-4 focus:ring-orange-500/5 rounded-lg px-2 py-1.5 outline-none transition-all"
+    />
   </div>
 );
