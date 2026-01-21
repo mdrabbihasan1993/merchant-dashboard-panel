@@ -30,7 +30,8 @@ import {
   ChevronRight,
   Zap,
   PauseCircle,
-  Building2
+  Building2,
+  HeadphonesIcon
 } from 'lucide-react';
 import { getLogisticsInsights } from '../services/geminiService';
 
@@ -97,7 +98,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ setActiveTab }) => {
   const fetchAIInsights = async () => {
     setIsAiLoading(true);
     setShowAiPanel(true);
-    const context = `Merchant Performance Data: Delivered: 11,420, Pending: 850, Returns: 540, Success: 91%, Credit: 70%. Recent surge in sorting delays (98 parcels at sorting).`;
+    const context = `
+      Current Dashboard Summary:
+      - Total Parcels: 12,840 (Delivered: 11,420, Pending: 850)
+      - Sorting Bottleneck: 98 parcels currently at sorting.
+      - Financials: ৳ 4,300 unpaid balance, ৳ 35,200 paid.
+      - Return Rate: 4.2% (540 parcels returned).
+      - Success Rate: 91.4%.
+      - Merchant Tier: Silver.
+    `;
     const insight = await getLogisticsInsights(context);
     setAiInsights(insight);
     setIsAiLoading(false);
@@ -154,22 +163,50 @@ export const Dashboard: React.FC<DashboardProps> = ({ setActiveTab }) => {
       {/* AI Insights Section */}
       {showAiPanel && (
         <div className="bg-white border border-[#1a3762]/10 rounded-2xl shadow-xl p-6 relative animate-in fade-in slide-in-from-top-4 transition-all overflow-hidden">
-          <div className="absolute top-0 left-0 w-1.5 h-full bg-[#1a3762]" />
+          <div className="absolute top-0 left-0 w-1.5 h-full bg-[#ff751f]" />
           <button onClick={() => setShowAiPanel(false)} className="absolute top-4 right-4 text-slate-400 hover:text-rose-500 transition-colors">
             <X size={18} />
           </button>
-          <div className="flex items-center gap-3 mb-4">
-            <Sparkles className="text-[#ff751f]" size={20} />
-            <h3 className="font-bold text-[#1a3762]">AI Business Analysis</h3>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <Sparkles className="text-[#ff751f]" size={20} />
+              <h3 className="font-bold text-[#1a3762] text-lg">AI Business Intelligence</h3>
+            </div>
+            {!isAiLoading && (
+              <div className="flex items-center gap-2 px-3 py-1 bg-blue-50 text-[#1a3762] rounded-full border border-blue-100">
+                <ShieldCheck size={14} className="text-blue-500" />
+                <span className="text-[10px] font-black uppercase tracking-widest">7ton Verified Analysis</span>
+              </div>
+            )}
           </div>
+          
           {isAiLoading ? (
-            <div className="flex items-center gap-3 text-slate-500 text-sm">
-              <Loader2 size={20} className="animate-spin text-[#ff751f]" />
-              <span>Analyzing your logistics data...</span>
+            <div className="flex flex-col items-center justify-center py-10 gap-4">
+              <Loader2 size={32} className="animate-spin text-[#ff751f]" />
+              <p className="text-slate-500 text-sm font-medium animate-pulse">Scanning your logistics infrastructure...</p>
             </div>
           ) : (
-            <div className="text-slate-600 text-sm leading-relaxed whitespace-pre-line">
-              {aiInsights}
+            <div className="space-y-6">
+              <div className="text-slate-700 text-sm leading-relaxed whitespace-pre-line bg-slate-50/50 p-5 rounded-2xl border border-slate-100 font-medium">
+                {aiInsights}
+              </div>
+              <div className="flex flex-col sm:flex-row items-center gap-4 pt-2 border-t border-slate-100">
+                <div className="flex-1 flex items-center gap-3 bg-orange-50/50 p-4 rounded-xl border border-orange-100">
+                   <div className="w-10 h-10 bg-[#ff751f] rounded-lg flex items-center justify-center text-white shrink-0 shadow-lg shadow-orange-500/20">
+                     <HeadphonesIcon size={20} />
+                   </div>
+                   <div>
+                     <p className="text-[11px] font-bold text-[#1a3762] uppercase tracking-wide">Need expert assistance?</p>
+                     <p className="text-[10px] text-slate-500 leading-tight">Your 7ton Express KAM is ready to solve any problem personally.</p>
+                   </div>
+                </div>
+                <button 
+                  onClick={() => setActiveTab('KAM details')}
+                  className="whitespace-nowrap bg-[#1a3762] text-white px-6 py-3 rounded-xl text-xs font-bold shadow-md hover:bg-blue-900 transition-all flex items-center gap-2"
+                >
+                  Contact My KAM <ChevronRight size={14} />
+                </button>
+              </div>
             </div>
           )}
         </div>
