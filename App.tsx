@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Menu, X, Bell, Search, Settings } from 'lucide-react';
+import { Menu, X, Bell, Search, Settings, Camera, Smartphone } from 'lucide-react';
 import { Sidebar } from './components/Sidebar';
 import { Dashboard } from './components/Dashboard';
 import { AIBooking } from './components/AIBooking';
@@ -15,6 +15,40 @@ const App: React.FC = () => {
         return <Dashboard setActiveTab={setActiveTab} />;
       case 'AI Booking':
         return <AIBooking />;
+      case 'Camera Booking':
+        return (
+          <div className="h-full w-full flex flex-col items-center justify-center text-center p-8 bg-slate-50/20">
+            <div className="w-32 h-32 bg-white shadow-2xl shadow-slate-200/50 rounded-[2.5rem] flex items-center justify-center text-[#ff751f] mb-8 border border-slate-100 relative group transition-all hover:scale-105">
+               <Camera size={48} strokeWidth={1.5} />
+               <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-[#1a3762] rounded-2xl flex items-center justify-center text-white shadow-lg border-4 border-white">
+                 <Smartphone size={20} />
+               </div>
+            </div>
+            <h2 className="text-[#1a3762] text-2xl font-black mb-3 tracking-tight uppercase tracking-[3px]">Camera Booking</h2>
+            <div className="max-w-md bg-orange-50 border border-orange-100 p-6 rounded-2xl shadow-sm">
+              <p className="text-orange-800 font-bold italic text-lg leading-relaxed">
+                Camera booking only for Mobile app.
+              </p>
+              <p className="text-orange-600/70 text-sm mt-2 font-medium">
+                Please download the 7ton Express Merchant App from Play Store or App Store to use the QR/Camera scan booking feature.
+              </p>
+            </div>
+            <div className="mt-8 flex gap-4">
+               <div className="px-6 py-3 bg-white border border-slate-200 rounded-xl flex items-center gap-3 opacity-50 cursor-not-allowed grayscale">
+                 <div className="w-8 h-8 bg-slate-100 rounded flex items-center justify-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store" className="w-full h-full object-contain" />
+                 </div>
+                 <span className="text-[10px] font-black uppercase text-slate-400">Android</span>
+               </div>
+               <div className="px-6 py-3 bg-white border border-slate-200 rounded-xl flex items-center gap-3 opacity-50 cursor-not-allowed grayscale">
+                 <div className="w-8 h-8 bg-slate-100 rounded flex items-center justify-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" className="w-full h-full object-contain" />
+                 </div>
+                 <span className="text-[10px] font-black uppercase text-slate-400">iOS</span>
+               </div>
+            </div>
+          </div>
+        );
       default:
         return (
           <div className="h-full w-full flex flex-col items-center justify-center text-center p-6 bg-slate-50/30">

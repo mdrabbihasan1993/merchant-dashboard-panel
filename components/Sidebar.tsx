@@ -23,7 +23,8 @@ import {
   ChevronRight,
   Package,
   ClipboardList,
-  FileStack
+  FileStack,
+  Camera
 } from 'lucide-react';
 import { MenuItemData, MenuGroup } from '../types';
 
@@ -48,6 +49,7 @@ const menuGroups: MenuGroup[] = [
       { name: 'Bulk Entry', icon: FileStack },
       { name: 'Quick Booking', icon: Zap },
       { name: 'AI Booking', icon: Brain, badge: 'AI' },
+      { name: 'Camera Booking', icon: Camera, badge: 'App' },
       { name: 'Pickup Request', icon: Truck },
       { name: 'Fraud Check', icon: ShieldCheck, badge: 'Pro' },
       { name: 'No Entry Parcel', icon: AlertCircle },
